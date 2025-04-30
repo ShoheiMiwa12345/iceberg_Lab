@@ -1,4 +1,4 @@
-# Apache Iceberg（Pyiceberg）イネーブルメントガイド
+# Apache Iceberg（Pyiceberg）入門ガイド
 
 ## はじめに
 
@@ -56,32 +56,31 @@ URL: http://localhost:19120/ui/
 
 これらのURLはdocker-compose.ymlで指定されたポート設定に基づいています。コンテナが正常に起動していれば、これらのURLでアクセスできます。
 
-# Iceberg テーブルの基本操作
+## Iceberg テーブルの基本操作
 
 docker-compose が終了したら notebook をブラウザ上で開きます。記述済みの **Pyiceberg1.ipynb**　を上から Shift + Enter を押下し、実行してきます。 
 
 notebook で複数の処理が含まれています。
 
-## 1. 必要なライブラリのインストール
-## 2. Nessie カタログへの接続
-## 3. 名前空間の作成
-## 4. テーブルスキーマの定義
-## 5. Iceberg テーブルの作成
-## 6. データの追加
-## 7. データの確認
-## 8. 異なる日付のデータを追加（パーティション確認用）
-## 9. テーブルメタデータの確認
-## 10. テーブルプロパティ
-## 11. パーティション情報の取得
-## 12. スナップショット情報
-## 13. マニフェスト情報
+### 必要なライブラリのインストール
+### Nessie カタログへの接続
+### 名前空間の作成
+### テーブルスキーマの定義
+### Iceberg テーブルの作成
+### データの追加
+### データの確認
+### 異なる日付のデータを追加（パーティション確認用）
+### テーブルメタデータの確認
+### テーブルプロパティ
+### パーティション情報の取得
+### スナップショット情報
+### マニフェスト情報
 
-
-# Nessie ブランチ機能の活用
+## Nessie ブランチ機能の活用
 
 ここからNotebook を離れ、ローカルのbash 上から処理を実行します。
 
-## 1. docker attach nessie-cliを実行します。
+### docker attach nessie-cliを実行します。
 以下を実行します。
 
 ```bash
@@ -89,7 +88,7 @@ docker attach nessie-cli
 main> SHOW LOG
 ```
 
-## 2. 新しいブランチの作成します。
+### 新しいブランチの作成します。
 以下を実行します。
 
 ```bash
@@ -97,7 +96,7 @@ main> CREATE BRANCH feature_branch
 例) Created BRANCH feature_branch at 20e572c04f366464ab65245cd1794a35484ec2e77127434dbd1e14f12f5f468e
 ```
 
-## Notebook での再操作
+### Notebook での再操作
 
 先ほどの ipnyb ファイルの続きを実行します。
 
@@ -111,19 +110,20 @@ catalog = load_catalog(
 )
 ```
 
-## 新しいブランチへのデータ追加
-## 結果の確認
-## ブランチのマージ
+### 新しいブランチへのデータ追加
+### 結果の確認
+### ブランチのマージ
 
 ```bash
 # Nessie CLI上で実行
 main> merge feature_branch demo.user_table_with_date_partition 
 
-例）Target branch main is now at commit 9fdbb88f58ca8bb73e4dd7293ab5159e1340811755976cdc096bbd3199c5f00c```
+例）Target branch main is now at commit 9fdbb88f58ca8bb73e4dd7293ab5159e1340811755976cdc096bbd3199c5f00c
+```
 
-
-## マージ後のメインブランチ確認
-## データの確認
+### マージ後のメインブランチ確認
+### データの確認
+```
 table = catalog.load_table("demo.user_table_with_date_partition")
 result = table.scan().to_arrow()
 df = result.to_pandas()
