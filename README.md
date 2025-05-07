@@ -118,8 +118,14 @@ main> CREATE BRANCH feature_branch
 
 ```bash
 
-main> merge feature_branch demo.user_table_with_date_partition 
-出力例）Target branch main is now at commit 9fdbb88f58ca8bb73e4dd7293ab5159e1340811755976cdc096bbd3199c5f00c
+main>  merge feature_branch
+
+出力例) 
+Merge branch feature_branch into main successfully committed.
+
+Per-key details:
+demo.user_table_with_date_partition                                    NORMAL  OK
+Target branch main is now at commit b966115840250b96ad06fc58e7585dbea5018c1a1750897c8b58cd0395222e70
 
 ```
 
