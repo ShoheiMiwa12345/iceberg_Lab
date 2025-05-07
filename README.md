@@ -1,7 +1,6 @@
 # Apache Iceberg（Pyiceberg）入門ガイド
 
 ## はじめに
-
 Apache Icebergはオープンソースのテーブルフォーマットで、大規模なデータセットを効率的に管理するために設計されています。
 このガイドでは、Nessieカタログを使用したIcebergテーブルの作成、データ操作、およびブランチ機能の活用について説明します。
 
@@ -102,15 +101,15 @@ main> CREATE BRANCH feature_branch
 ✅feature_branch への接続
 
 ✅feature_branch 上からテーブルへデータを追加します
-Nessie Cli での操作を実行します。
 
 ✅feature_branch のマージ
-# Nessie CLI上で実行
+
+## Nessie Cli での操作を実行します。
+
 main> merge feature_branch demo.user_table_with_date_partition 
 出力例）Target branch main is now at commit 9fdbb88f58ca8bb73e4dd7293ab5159e1340811755976cdc096bbd3199c5f00c
 
 ✅Main ブランチでのデータ確認
-
 
 このガイドでは、Apache Icebergとnessieカタログを使用した:
 テーブルの作成と基本操作
@@ -118,6 +117,11 @@ main> merge feature_branch demo.user_table_with_date_partition
 テーブルメタデータの分析
 ブランチ機能によるバージョン管理
 これらの機能により、Icebergは大規模データセットの管理に適した選択肢となります。
+
+## Docker コンテナの削除
+Docker のコンテナ削除を行う場合、以下のコマンドを発行します。
+
+docker-compose down -v
 
 ## まとめ
 
