@@ -89,12 +89,22 @@ Iceberg テーブルのスキーマを進化（新しい列を追加）
 ## ローカルから Nessie Cli での操作を実行します。
 
 ✅Nessie Cli を Docker へアタッチ(コンテナが起動している事をチェック)
+
+```bash
+# docker-compose.yml が存在するディレクトリで実行
+※nessie-cli コンテナが起動してない場合は起動してください。
+
 docker attach nessie-cli
 main> SHOW LOG
 
+```
+
 ✅feature_branch を作成します。
+
+```bash
 main> CREATE BRANCH feature_branch
 出力例) Created BRANCH feature_branch at 20e572c04f366464ab65245cd1794a35484ec2e77127434dbd1e14f12f5f468e
+```
 
 ## Notebook での作業を再開します。
 
@@ -102,12 +112,16 @@ main> CREATE BRANCH feature_branch
 
 ✅feature_branch 上からテーブルへデータを追加します
 
+## Nessie Cli(ローカル)での操作を実行します。
+
 ✅feature_branch のマージ
 
-## Nessie Cli での操作を実行します。
+```bash
 
 main> merge feature_branch demo.user_table_with_date_partition 
 出力例）Target branch main is now at commit 9fdbb88f58ca8bb73e4dd7293ab5159e1340811755976cdc096bbd3199c5f00c
+
+```
 
 ✅Main ブランチでのデータ確認
 
