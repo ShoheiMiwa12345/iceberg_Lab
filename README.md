@@ -50,7 +50,7 @@ URL: http://localhost:8888
 
 ### Nessie UI
 
-URL: http://localhost:19120/ui/
+URL: http://localhost:19120/
 
 説明: Nessieカタログのブラウザインターフェース、リポジトリやブランチの管理ができます
 
@@ -59,80 +59,65 @@ URL: http://localhost:19120/ui/
 ## Iceberg テーブルの基本操作
 
 docker-compose が終了したら notebook をブラウザ上で開きます。記述済みの **Pyiceberg1.ipynb**　を上から Shift + Enter を押下し、実行してきます。 
-
 notebook で複数の処理が含まれています。
 
-### 必要なライブラリのインストール
-### Nessie カタログへの接続
-### 名前空間の作成
-### テーブルスキーマの定義
-### Iceberg テーブルの作成
-### データの追加
-### データの確認
-### 異なる日付のデータを追加（パーティション確認用）
-### テーブルメタデータの確認
-### テーブルプロパティ
-### パーティション情報の取得
-### スナップショット情報
-### マニフェスト情報
+✅必要なライブラリのインストール
+pyiceberg パッケージをインストールし、Nessie や SQLite、S3 との連携を含むオプションを有効にしています。
 
+✅Nessie Catalog に接続
+Nessie REST API を使って Iceberg のカタログに接続しています。
 
+✅名前空間を作成 /  スキーマ、パーティション、ソート定義
+Iceberg テーブルの構造を定義します
 
-## Nessie ブランチ機能の活用
+✅テーブルの作成 / PyArrow テーブルを作成して Iceberg に追加
+Iceberg カタログ上に新しいテーブルを作成します
 
-ここからNotebook を離れ、ローカルのbash 上から処理を実行します。
+✅テーブルをスキャンして Pandas DataFrame に変換・表示
+Iceberg テーブルの内容を取得して追加されたデータを表示します
 
-### docker attach nessie-cliを実行します。
-以下を実行します。
+✅テーブルプロパティ、パーティション仕様、スナップショット情報の取得
+メタ情報の取得します。
 
-```bash
+✅Iceberg のスナップショットメタデータおよびマニフェストファイル情報の確認
+履歴・ファイル構成を確認します。
+
+✅Iceberg スキーマの進化
+Iceberg テーブルのスキーマを進化（新しい列を追加）
+
+✅追加したデータの削除
+
+## ローカルから Nessie Cli での操作を実行します。
+
+✅Nessie Cli を Docker へアタッチ(コンテナが起動している事をチェック)
 docker attach nessie-cli
 main> SHOW LOG
-```
 
-### 新しいブランチの作成します。
-以下を実行します。
-
-```bash
+✅feature_branch を作成します。
 main> CREATE BRANCH feature_branch
-例) Created BRANCH feature_branch at 20e572c04f366464ab65245cd1794a35484ec2e77127434dbd1e14f12f5f468e
-```
+出力例) Created BRANCH feature_branch at 20e572c04f366464ab65245cd1794a35484ec2e77127434dbd1e14f12f5f468e
 
-### Notebook での再操作
+## Notebook での作業を再開します。
 
-先ほどの ipnyb ファイルの続きを実行します。
+✅feature_branch への接続
 
-```python
-# Nessie REST Catalog に接続（feature_branch）
-catalog = load_catalog(
-    "nessie",
-    **{
-        "uri": "http://nessie:19120/iceberg/feature_branch/",
-    }
-)
-```
+✅feature_branch 上からテーブルへデータを追加します
+Nessie Cli での操作を実行します。
 
-### 新しいブランチへのデータ追加
-### 結果の確認
-### ブランチのマージ
-
-```bash
+✅feature_branch のマージ
 # Nessie CLI上で実行
 main> merge feature_branch demo.user_table_with_date_partition 
+出力例）Target branch main is now at commit 9fdbb88f58ca8bb73e4dd7293ab5159e1340811755976cdc096bbd3199c5f00c
 
-例）Target branch main is now at commit 9fdbb88f58ca8bb73e4dd7293ab5159e1340811755976cdc096bbd3199c5f00c
-```
+✅Main ブランチでのデータ確認
 
-### マージ後のメインブランチ確認
-### データの確認
-```
-table = catalog.load_table("demo.user_table_with_date_partition")
-result = table.scan().to_arrow()
-df = result.to_pandas()
-df = df.sort_values(by="id", ascending=True)
-print("データの参照結果")
-print(df)
-```
+
+このガイドでは、Apache Icebergとnessieカタログを使用した:
+テーブルの作成と基本操作
+パーティションの活用
+テーブルメタデータの分析
+ブランチ機能によるバージョン管理
+これらの機能により、Icebergは大規模データセットの管理に適した選択肢となります。
 
 ## まとめ
 
@@ -142,9 +127,7 @@ print(df)
 2. パーティションの活用
 3. テーブルメタデータの分析
 4. ブランチ機能によるバージョン管理
-
 これらの機能により、Icebergは大規模データセットの管理に適した選択肢となります。
-
 
 ## 参考資料
 
